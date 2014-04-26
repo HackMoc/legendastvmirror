@@ -8,47 +8,36 @@ presentes no [CouchDB](http://couchdb.apache.org/).
 O id_generator é um script indepotente que criará uma lista de ids de shows
 para o magro percorrer. Esta lista será salva no CouchDB e terá o seguinte "schema":
 
-JSON de Exemplo:
-
-    [{
-        show_id: 1,
-        exists: null,
-        last_checked: 0 
-    }]
-
-### Atributos
- - `show_id`: ID que identifica um show.
- - `exists`: Boleano, que definie se o ID pertence a um show válido ou não.
- - `last_check`: timestamp da última checkagem.
-
-## Entidade de um show
+## Entidades de um show
 
 Cada show, seja filme ou uma temporada de uma série, no site terá um id Associado.
 
-JSON de Exemplo:
+JSON de Exemplo dos shows:
 
-    {
-        "show_id": 1,
-        "show_name": "name",
-        "episodes": [
-            {
-                "status": "new"
-                "language": "flag",
-                "release_link" : "download/52e5425cf17c3/Kuma/Kuma_2012_PROPER_DVDRip_XviD"
-                "slug": "Fargo.S01E02.HDTV.x264-2HD-AFG-FUM-mSD-KILLERS-BS",
-                "subtitle_download_link": "/downloadarquivo/535b19c1835ca",
-                "last_change_time" : timestamp,
-                "filename": "[pt-br]Fargo.S01E02.HDTV.x264-2HD-AFG-FUM-mSD-KILLERS-BS.rar",
-            },
-        ],
-        "status": "done",
-        "last_change_time",
-    }
+    "id": primmary key,
+    "show_id": int,
+    "exists": null,
+    "show_name": var_char(),
+    "status": small_int,
+    "last_change_time": timestamp,
+
+JSON de Exemplo das releases: 
+
+    "id": primmary key,
+    "status": small int
+    "language": var_char(5)
+    "release_link" : var_char()
+    "show_id": int chave estrangeira para o `id` do show.
+    "slug": var_char()
+    "subtitle_download_link": var_char()
+    "last_change_time" : timestamp,
+    "filename": var_char(),
 
 ### Atributos
 
 - `show_id`: ID do show extraído pelo **magro**.
 - `show_name`: Nome do show obtido pelo **extractor**, apenas na primeira iteração.
+- `exists`: Boleano, que definie se o ID pertence a um show válido ou não.
 - `episodes`: Lista com todos os episódios do show.
     - `status: Estado atual do episódio`:
         - `new`: Acabou de ser criado pelo **magro**. Preenchendo apenas `status`, `release_link`, `language` e `slug`.
@@ -57,11 +46,15 @@ JSON de Exemplo:
         - `downloading`: O **gordo** começou a trabalhar. Atualizando o `status`como um *mutex* e o `Last_change_time`.
         - `Done`: O grodo terminou o trabalho. Atualizando o `status` e o `last_change_time` e finalmente preenchendo o `filename`.
     - `language: Deverá ser a abreviação do idioma ex`: 'pt-br', 'en-us'. Atualizado pelo **magro**.
-    - `release_link`: Link para a página que contêm as informações do episódio. Atualizado pelo **magro**.
+    - `release_link`: Link para a página que contêm as informações do episódio. Atualizado pelo **magro**. 
+Exemplo: "download/52e5425cf17c3/Kuma/Kuma_2012_PROPER_DVDRip_XviD".
     - `slug`: Nome de referência com as informações dos releases. Atualizado pelo **magro**.
+Exemplo: "Fargo.S01E02.HDTV.x264-2HD-AFG-FUM-mSD-KILLERS-BS".
     - `subtitle_download_link`: Link para download do arquivo `.rar`das legendas. Atualizado pelo **extractor**.
+Exemplo: "/downloadarquivo/535b19c1835ca".
     - `last_change_time`: Último *timestamp* que algum *crawler* fez qualquer alteração no episódio.
     - `filename`: Nome do arquivo salvo pelo **gordo**.
+Exemplo: "[pt-br]Fargo.S01E02.HDTV.x264-2HD-AFG-FUM-mSD-KILLERS-BS.rar",
 - `status`: Estado atual do show em relação ao extractor, estados:
     - `new`: Criado pelo **Magro** e indica que está pronto para ser trabalhado pelo **extractor**.
     - `extracting`: Indica que o show está sendo extraido nesse momento.
