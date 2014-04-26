@@ -8,11 +8,18 @@ presentes no [CouchDB](http://couchdb.apache.org/).
 O id_generator é um script indepotente que criará uma lista de ids de shows
 para o magro percorrer. Esta lista será salva no CouchDB e terá o seguinte "schema":
 
+JSON de Exemplo:
+
     [{
         show_id: 1,
-        exists: null, //pode se tornar true ou false depois do magro verificar a existência do mesmo
+        exists: null,
         last_checked: 0 
     }]
+
+### Atributos
+ - `show_id`: ID que identifica um show.
+ - `exists`: Boleano, que definie se o ID pertence a um show válido ou não.
+ - `last_check`: timestamp da última checkagem.
 
 ## Entidade de um show
 
@@ -44,11 +51,11 @@ JSON de Exemplo:
 - `show_name`: Nome do show obtido pelo **extractor**, apenas na primeira iteração.
 - `episodes`: Lista com todos os episódios do show.
  - `status: Estado atual do episódio`:
-  - `new`: Acabou de ser criado pelo **magro**. Preenchendo apenas `status`, `release_link`, `language` e `slug`.
-  - `extracting`: O **extractor** começou a trabalhar. Preenchendo o `status` como um *mutex* e atualizando o `Last_change_time`.
-  - `extracted`: Foi processado pelo **extractor**. Preenchendo `subtitle_download_link` e `last_change_time`.
-  - `downloading`: O **gordo** começou a trabalhar. Atualizando o `status`como um *mutex* e o `Last_change_time`.
-  - `Done`: O grodo terminou o trabalho. Atualizando o `status` e o `last_change_time` e finalmente preenchendo o `filename`.
+   - `new`: Acabou de ser criado pelo **magro**. Preenchendo apenas `status`, `release_link`, `language` e `slug`.
+   - `extracting`: O **extractor** começou a trabalhar. Preenchendo o `status` como um *mutex* e atualizando o `Last_change_time`.
+   - `extracted`: Foi processado pelo **extractor**. Preenchendo `subtitle_download_link` e `last_change_time`.
+   - `downloading`: O **gordo** começou a trabalhar. Atualizando o `status`como um *mutex* e o `Last_change_time`.
+   - `Done`: O grodo terminou o trabalho. Atualizando o `status` e o `last_change_time` e finalmente preenchendo o `filename`.
  - `language: Deverá ser a abreviação do idioma ex`: 'pt-br', 'en-us'. Atualizado pelo **magro**.
  - `release_link`: Link para a página que contem o as informaçõe do episódio. Atualizado pelo **magro**.
  - `slug`: Nome de referência com as informações dos releases. Atualizado pelo **magro**.
