@@ -1,9 +1,9 @@
 # Estrutura de dados
 
-Os diversos crawles no legendastvmirro deverão trabalhar sobre uma mesma entidade
-presente no (CouchDB)[http://couchdb.apache.org/] veja abaixo.
+Os diversos *crawlers* no *legendastvmirror* deverão trabalhar sobre uma mesma entidade
+presente no [CouchDB](http://couchdb.apache.org/).
 
-Exemplo de Json:
+JSON de Exemplo:
 
     {
         "show_id": 1,
@@ -25,23 +25,23 @@ Exemplo de Json:
 
 ## Atributos
 
-- show_id: ID do show extraído pelo **magro**.
-- show_name: Nome do show obtido pelo **extractor**, apenas na primeira iteração.
-- episodes: Lista com todos os episódios do show.
- - status: Estado atual do episódio:
-  - new: Acabou de ser criado pelo **magro**. Preenchendo apenas `status`, `release_link`, `language` e `slug`.
-  - extracting: O **extractor** começou a trabalhar. Preenchendo o `status` como um *mutex* e atualizando o `Last_change_time`.
-  - extracted: Foi processado pelo **extractor**. Preenchendo `subtitle_download_link` e `last_change_time`.
-  - downloading: O **gordo** começou a trabalhar. Atualizando o `status`como um *mutex* e o `Last_change_time`.
-  - Done: O grodo terminou o trabalho. Atualizando o `status` e o `last_change_time` e finalmente preenchendo o `filename`.
- - language: Deverá ser a abreviação do idioma ex: 'pt-br', 'en-us'. Atualizado pelo **magro**.
- - release_link: Link para a página que contem o as informaçõe do episódio. Atualizado pelo **magro**.
- - slug: Nome de referência com as informações dos releases. Atualizado pelo **magro**.
- - subtitle_download_link: Link para download do arquivo `.rar`das legendas. Atualizado pelo **extractor**.
- - last_change_time: Último *timestamp* que algum *crawler* fez qualquer alteração no episódio.
- - filename: Nome do arquivo salvo pelo **gordo**.
-- status: Estado atual do show em relação ao extractor, estados:
- - Novo: Criado pelo **Magro** e indica que está pronto para ser trabalhado pelo **extractor**.
- - extracting: Indica que o show está sendo extraido nesse momento.
- - done: Indica que todos os `subtitle_download_link` foram criados.
-- last_change_time: Indica quando o show teve sua ultima modificação, **deverá** ser ajustado por todos os crawlers.
+- `show_id`: ID do show extraído pelo **magro**.
+- `show_name`: Nome do show obtido pelo **extractor**, apenas na primeira iteração.
+- `episodes`: Lista com todos os episódios do show.
+ - `status: Estado atual do episódio`:
+  - `new`: Acabou de ser criado pelo **magro**. Preenchendo apenas `status`, `release_link`, `language` e `slug`.
+  - `extracting`: O **extractor** começou a trabalhar. Preenchendo o `status` como um *mutex* e atualizando o `Last_change_time`.
+  - `extracted`: Foi processado pelo **extractor**. Preenchendo `subtitle_download_link` e `last_change_time`.
+  - `downloading`: O **gordo** começou a trabalhar. Atualizando o `status`como um *mutex* e o `Last_change_time`.
+  - `Done`: O grodo terminou o trabalho. Atualizando o `status` e o `last_change_time` e finalmente preenchendo o `filename`.
+ - `language: Deverá ser a abreviação do idioma ex`: 'pt-br', 'en-us'. Atualizado pelo **magro**.
+ - `release_link`: Link para a página que contem o as informaçõe do episódio. Atualizado pelo **magro**.
+ - `slug`: Nome de referência com as informações dos releases. Atualizado pelo **magro**.
+ - `subtitle_download_link`: Link para download do arquivo `.rar`das legendas. Atualizado pelo **extractor**.
+ - `last_change_time`: Último *timestamp* que algum *crawler* fez qualquer alteração no episódio.
+ - `filename`: Nome do arquivo salvo pelo **gordo**.
+- `status`: Estado atual do show em relação ao extractor, estados:
+ - `new`: Criado pelo **Magro** e indica que está pronto para ser trabalhado pelo **extractor**.
+ - `extracting`: Indica que o show está sendo extraido nesse momento.
+ - `done`: Indica que todos os `subtitle_download_link` foram criados.
+- `last_change_time`: Indica quando o show teve sua ultima modificação, **deverá** ser ajustado por todos os crawlers.
