@@ -14,7 +14,9 @@ para o magro percorrer. Esta lista será salva no CouchDB e terá o seguinte "sc
     last_checked: 0 
 }]
 
-## Entidade de show
+## Entidade de um show
+
+Cada show, seja filme ou uma temporada de uma série, no site terá um id Associado.
 
 JSON de Exemplo:
 
