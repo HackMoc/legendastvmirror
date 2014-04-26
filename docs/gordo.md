@@ -3,13 +3,13 @@ gordo.py
 
 O gordo é o responsável por obter os links do extractor e baixa-los. O gordo
 faz uma consulta na base de dados pelo primeiro show que tiver o atributo
-"extractor_status" como "done";
+`status` do show como `done`;
 
 O gordo vai percorrer cada um dos links que não foram baixados ou que estão com
-o status downloading há mais de 20 minutos dentro do array "episodes" para
+o status downloading há mais de 20 minutos dentro do array `episodes` para
 baixa-los. Quando começar a baixar um episódio, o gordo vai setar o status como
-'downloading' e atualizar o last_change_time com a ultima atualização.
+`downloading` e atualizar o last_change_time com a ultima atualização.
 
-O timestamp é necessário para termos um "timeout": gordos que estão baixando
-uma legenda há 20 minutos certamente tem algum problema e a legenda precisa ser
+O timestamp é necessário para termos um `timeout`: gordos que estão baixando
+uma legenda há 10 minutos certamente tem algum problema e a legenda precisa ser
 baixada novamente;
