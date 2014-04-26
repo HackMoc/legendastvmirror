@@ -18,18 +18,18 @@ JSON de Exemplo dos shows:
     "show_id": int,
     "exists": null,
     "show_name": var_char(),
-    "status": small_int,
+    "status": var_char(),
     "last_change_time": timestamp,
 
 JSON de Exemplo das releases: 
 
     "id": primary key,
-    "status": small int
-    "language": var_char(5)
-    "release_link" : var_char()
+    "status": var_char(),
+    "language": var_char(5),
+    "release_link" : var_char(),
     "show_id": int chave estrangeira para o `id` do show.
-    "slug": var_char()
-    "subtitle_download_link": var_char()
+    "slug": var_char(),
+    "subtitle_download_link": var_char(),
     "last_change_time" : timestamp,
     "filename": var_char(),
 
