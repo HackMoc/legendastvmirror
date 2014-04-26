@@ -1,39 +1,57 @@
 # -*- coding: utf-8 -*-
-# Exemplo: http://legendas.tv/util/carrega_legendas_busca/id_filme:50000
-# 1 - Verificar se tem conteúdo
-# 1.1 - Se tiver, ele coloca as urls da página na fila
-# "O magro põe na fila, o gordo come"
-
+import datetime
 from bs4 import BeautifulSoup as BS
 import requests
-import couchdb
+import dataset
 
 class Magro(object):
 
-    def __init__(self, *args, **kwargs):
-        self.ids = kwargs['ids']
-        server = couchdb.Server(url='http://localhost:5984')
-        self.db = server['legendastvurls']
+    def __init__(self):
+        self.db = dataset.connect('postgresql+psycopg2://postgres@localhost/legendastvmirror')
+        _30diasatras = datetime.datetime.now() - datetime.timedelta(30)
+        self.results = self.db['shows'].find(exists=None)
+        self.links = []
 
     def work(self, *args, **kwargs):
-        for id in self.ids:
-            self.id = id
+        for show in self.results:
+            self.show = show
             self.__pega_links()
             self.__salva_links()
 
-    def __pega_links(self, pagina=1, links=[]):
-        page = requests.get('http://legendas.tv/util/carrega_legendas_busca/id_filme:{num}/page:{page}'.format(num=self.id,page=pagina))
+    def __pega_links(self, pagina=1):
+        page = requests.get('http://legendas.tv/util/carrega_legendas_busca/id_filme:{num}/page:{page}'.format(num=self.show['show_id'],page=pagina))
         soup = BS(page.content)
-        links.extend([s['href'] for s in soup.find_all('a') if s.get('href') and s['href'].startswith('/download')])
+        _links = [{'link': s['href'],
+                  'show_id':self.show['show_id'],
+                  'idioma': s.find_parents('div', {'class': 'gallery'})[0].find('img')['title']
+                  }
+                    for s in soup.find_all('a') if s.get('href') and s['href'].startswith('/download')]
+        self.links.extend(_links)
         load_more = soup.find_all('a', attrs={'class': 'load_more'})
         if load_more:
-            return self.__pega_links(pagina+1, links)
-        else:
-            self.links = links
+            return self.__pega_links(pagina+1)
 
     def __salva_links(self):
+        self.db.begin()
+        self.show['exists'] = bool(self.links)
+        self.show['last_change_time'] = datetime.datetime.now()
+        self.show['status'] = 'new'
+        self.db['shows'].update(self.show, ['id'])
         for link in self.links:
+            print "[{show} Salvando link {link}".format(show=link['show_id'], link=link['link'])
             self.__salva_link(link)
+        self.db.commit()
+        self.links = []
 
     def __salva_link(self, link):
-        self.db.save({'_id': link, 'work_date': None, 'finished_date': None, 'show_id': self.id})
+        release = dict(status='new',
+                        language=link['idioma'],
+                        release_link=link['link'],
+                        show_id=self.show['id'],
+                        slug='',
+                        subtitle_download_link='',
+                        last_change_time=datetime.datetime.now(),
+                        filename='')
+        self.db['releases'].insert(release, ensure=False)
+
+Magro().work()

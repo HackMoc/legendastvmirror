@@ -1,9 +1,15 @@
-from couchdb.client import Server
+import sys
+import datetime
+import dataset
+import sqlalchemy
 NUM_SHOWS = 35000
-server = Server('http://localhost:5984/')
-db = server['legendastvmirror']
-ids_list = []
+db = dataset.connect('postgresql+psycopg2://postgres@localhost/legendastvmirror')
 
-for x in xrange(1, NUM_SHOWS):
-    doc = dict(show_id=x, exists=None, last_checked=0, type='IdGenerator')
-    db.save(doc)
+def run():
+    table = db['shows']
+    for x in xrange(1, NUM_SHOWS):
+        reg = dict(show_id=x, exists=None, last_change_time=datetime.datetime.min, show_name='', status='')
+        table.insert(reg, ensure=False)
+
+if __name__ == '__main__':
+    run()

@@ -23,10 +23,10 @@ JSON de Exemplo dos shows:
 
 JSON de Exemplo das releases: 
 
-    "id": primary key,
-    "status": var_char(),
-    "language": var_char(5),
-    "release_link" : var_char(),
+    "id": primmary key,
+    "status": small int
+    "language": var_char(20)
+    "release_link" : var_char()
     "show_id": int chave estrangeira para o `id` do show.
     "slug": var_char(),
     "subtitle_download_link": var_char(),
