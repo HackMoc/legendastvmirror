@@ -19,21 +19,23 @@ Exemplo de Json:
                 "filename": "[pt-br]Fargo.S01E02.HDTV.x264-2HD-AFG-FUM-mSD-KILLERS-BS.rar",
             },
         ],
-        "extractor_status": "done",
+        "status": "done",
+        "last_change_time",
     }
 
 ## Atributos
 
-- show_id: ID do show extraído pelo *magro*.
-- show_name: Nome do show obtido pelo *extractor*, apenas na primeira iteração.
+- show_id: ID do show extraído pelo **magro**.
+- show_name: Nome do show obtido pelo **extractor**, apenas na primeira iteração.
 - episodes: Lista com todos os episódios do show.
  - status: Estado atual do episódio:
- - new: Acabou de ser criado pelo *magro*. Preenchendo apenas `status`, `release_link`, `language` e `slug`.
- - extracting: O *extractor* começou a trabalhar. Preenchendo o `status` como um *mutex* e atualizando o `Last_change_time`.
- - extracted: Foi processado pelo *extractor*. Preenchendo `subtitle_download_link` e `last_change_time`.
- - downloading: O *gordo* começou a trabalhar. Atualizando o `status`como um *mutex* e o `Last_change_time`.
+ - new: Acabou de ser criado pelo **magro**. Preenchendo apenas `status`, `release_link`, `language` e `slug`.
+ - extracting: O **extractor** começou a trabalhar. Preenchendo o `status` como um *mutex* e atualizando o `Last_change_time`.
+ - extracted: Foi processado pelo **extractor**. Preenchendo `subtitle_download_link` e `last_change_time`.
+ - downloading: O **gordo** começou a trabalhar. Atualizando o `status`como um *mutex* e o `Last_change_time`.
  - Done: O grodo terminou o trabalho. Atualizando o `status` e o `last_change_time` e finalmente preenchendo o `filename`.
-
-new
-working
-downloaded
+- status: Estado atual do show em relação ao extractor, estados:
+ - Novo: Criado pelo **Magro** e indica que está pronto para ser trabalhado pelo **extractor**.
+ - extracting: Indica que o show está sendo extraido nesse momento.
+ - done: Indica que todos os `subtitle_download_link` foram criados.
+- last_change_time: Indica quando o show teve sua ultima modificação, **deverá** ser ajustado por todos os crawlers.
