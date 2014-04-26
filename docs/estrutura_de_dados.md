@@ -57,7 +57,7 @@ JSON de Exemplo:
         - `downloading`: O **gordo** começou a trabalhar. Atualizando o `status`como um *mutex* e o `Last_change_time`.
         - `Done`: O grodo terminou o trabalho. Atualizando o `status` e o `last_change_time` e finalmente preenchendo o `filename`.
     - `language: Deverá ser a abreviação do idioma ex`: 'pt-br', 'en-us'. Atualizado pelo **magro**.
-    - `release_link`: Link para a página que contem o as informaçõe do episódio. Atualizado pelo **magro**.
+    - `release_link`: Link para a página que contêm as informações do episódio. Atualizado pelo **magro**.
     - `slug`: Nome de referência com as informações dos releases. Atualizado pelo **magro**.
     - `subtitle_download_link`: Link para download do arquivo `.rar`das legendas. Atualizado pelo **extractor**.
     - `last_change_time`: Último *timestamp* que algum *crawler* fez qualquer alteração no episódio.
