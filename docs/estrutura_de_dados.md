@@ -14,7 +14,7 @@ Cada show, seja filme ou uma temporada de uma série, no site terá um id Associ
 
 JSON de Exemplo dos shows:
 
-    "id": primmary key,
+    "id": primary key,
     "show_id": int,
     "exists": null,
     "show_name": var_char(),
@@ -23,7 +23,7 @@ JSON de Exemplo dos shows:
 
 JSON de Exemplo das releases: 
 
-    "id": primmary key,
+    "id": primary key,
     "status": small int
     "language": var_char(5)
     "release_link" : var_char()
