@@ -27,12 +27,12 @@ Exemplo de Json:
 - show_id: ID do show extraído pelo *magro*.
 - show_name: Nome do show obtido pelo *extractor*, apenas na primeira iteração.
 - episodes: Lista com todos os episódios do show.
-..- status: Estado atual do episódio:
-....- new: Acabou de ser criado pelo *magro*. Preenchendo apenas `status`, `release_link`, `language` e `slug`.
-....- extracting: O *extractor* começou a trabalhar. Preenchendo o `status` como um *mutex* e atualizando o `Last_change_time`.
-....- extracted: Foi processado pelo *extractor*. Preenchendo `subtitle_download_link` e `last_change_time`.
-....- downloading: O *gordo* começou a trabalhar. Atualizando o `status`como um *mutex* e o `Last_change_time`.
-....- Done: O grodo terminou o trabalho. Atualizando o `status` e o `last_change_time` e finalmente preenchendo o `filename`.
+ - status: Estado atual do episódio:
+ - new: Acabou de ser criado pelo *magro*. Preenchendo apenas `status`, `release_link`, `language` e `slug`.
+ - extracting: O *extractor* começou a trabalhar. Preenchendo o `status` como um *mutex* e atualizando o `Last_change_time`.
+ - extracted: Foi processado pelo *extractor*. Preenchendo `subtitle_download_link` e `last_change_time`.
+ - downloading: O *gordo* começou a trabalhar. Atualizando o `status`como um *mutex* e o `Last_change_time`.
+ - Done: O grodo terminou o trabalho. Atualizando o `status` e o `last_change_time` e finalmente preenchendo o `filename`.
 
 new
 working
