@@ -9,6 +9,8 @@ O gordo vai percorrer cada um dos links que não foram baixados ou que estão co
 o status downloading há mais de 20 minutos dentro do array `episodes` para
 baixa-los. Quando começar a baixar um episódio, o gordo vai setar o status como
 `downloading` e atualizar o last_change_time com a ultima atualização.
+Ao termino do download da legenda, o gordo altera o status do episódio para 'done'
+e atualiza novamente o last_change_time.
 
 O timestamp é necessário para termos um `timeout`: gordos que estão baixando
 uma legenda há 10 minutos certamente tem algum problema e a legenda precisa ser
