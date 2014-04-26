@@ -16,7 +16,7 @@ A partir da busca realizada em cada id_filme o magro informa se aquela página e
 É responsabilidade do magro informar o atributo show_id da estrutura de dados, atributo este que se refere ao id_filme. O magro tem também como
 responsabilidade listar todos os links para as páginas de downloads encontradas nas páginas do respectivo show_id.
 
-A cada link encontrado, o magro altera o status do espisódio para new, informa a linguagem através do atributo language,
+A cada novo link, o magro insere um novo espisódio com `status` igual a new, informa a linguagem através do atributo `language`,
 informa o atributo slug e o link para a página de download da legenda através do atributo release_link.
 Ao termino da listagem dos links da página, é alterado o status do show_id para new, informando que aquele show_id está pronto para que o extractor possa trabalhar,
 e a última modificação realizada no show_id, para essa alteração é utilizado o campo last_change_time.
