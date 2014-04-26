@@ -1,7 +1,20 @@
-# Estrutura de dados
+# Estruturas de dados
 
-Os diversos *crawlers* no *legendastvmirror* deverão trabalhar sobre uma mesma entidade
-presente no [CouchDB](http://couchdb.apache.org/).
+Os diversos *crawlers* no *legendastvmirror* deverão trabalhar sobre as mesmas entidades
+presentes no [CouchDB](http://couchdb.apache.org/).
+
+## id_generator
+
+O id_generator é um script indepotente que criará uma lista de ids de shows
+para o magro percorrer. Esta lista será salva no CouchDB e terá o seguinte "schema":
+
+[{
+    show_id: 1,
+    exists: null, //pode se tornar true ou false depois do magro verificar a existência do mesmo
+    last_checked: 0 
+}]
+
+## Entidade de show
 
 JSON de Exemplo:
 
@@ -23,7 +36,7 @@ JSON de Exemplo:
         "last_change_time",
     }
 
-## Atributos
+### Atributos
 
 - `show_id`: ID do show extraído pelo **magro**.
 - `show_name`: Nome do show obtido pelo **extractor**, apenas na primeira iteração.
