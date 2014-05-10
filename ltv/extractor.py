@@ -14,7 +14,6 @@ class Extractor(object):
         query = "SELECT * FROM shows WHERE status = 'new' OR (status = 'extracting' and last_change_time  <= '{maxtime}')".format(maxtime=maxtime)
         self.shows = list(self.db.query(query))
 
-
     def work(self):
         for show in self.shows:
             # Travando o status do show, proteção em caso de falha
@@ -29,10 +28,9 @@ class Extractor(object):
             show['status'] = 'done'
             self.db['shows'].update(show, ['id'], ensure=False)
 
-
     def get_download_link(self, show):
         # Obtendo todas as releases do show
-        releases = self.db['releases'].find(id = show['id'])
+        releases = self.db['releases'].find(id=show['id'])
         for release in releases:
             html = requests.get("http://legendas.tv" + release['release_link'])
             soup = BS(html.content)
