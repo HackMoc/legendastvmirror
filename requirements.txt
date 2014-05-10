@@ -1,5 +1,5 @@
 beautifulsoup4==4.3.2
 dataset==0.5.2
-psycopg==2.5.2
+psycopg2==2.5.2
 requests==2.2.1
 tox==1.7.1
