@@ -3,7 +3,7 @@
 O extractor é responsável por preencher os detalhes de cada episódio para que o 
 gordo possa realizar os downloads dos episódios.
 
-O extractor deverá obter os dados de um show a partir do *Couchdb* e 
+O extractor deverá obter os dados de um show a partir do *postgres* e 
 acessar todos os `release_link` e preenchendo cada `episodes` seguindo
 os seguintes passos:
 
