@@ -1,14 +1,5 @@
-CouchDB==0.9
-Mako==0.9.1
-MarkupSafe==0.23
-PyYAML==3.11
-SQLAlchemy==0.9.4
-Unidecode==0.04.14
-alembic==0.6.5
-argparse==1.2.1
 beautifulsoup4==4.3.2
-dataset==0.5.3
-psycopg2==2.5.2
-python-slugify==0.0.7
+dataset==0.5.2
+psycopg==2.5.2
 requests==2.2.1
-wsgiref==0.1.2
+tox==1.7.1
