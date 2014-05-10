@@ -4,21 +4,26 @@ import datetime
 import os
 import requests
 import sys
+from multiprocessing import Pool
 
+
+NUM_WORKERS = 10
 
 class Gordo(object):
 
-    def __init__(self, base_path, *args, **kwargs):
+    def __init__(self, base_path, results, *args, **kwargs):
         self.base_path = base_path
         self.db = dataset.connect('postgresql+psycopg2://postgres@localhost/legendastvmirror')
-        self.shows = self.db['shows'].find(status='done')
+        self.shows = results
         self.release = None
         self.show = None
 
     def work(self, *args, **kwargs):
         for show in self.shows:
             self.show = show
-            releases = self.db['release'].find(show_id=show['id'], status='extracted')
+            last_change = datetime.datetime.strftime(datetime.datetime.now() + datetime.timedelta(minutes=20), '%Y-%m-%d %H:%M')
+            query = 'SELECT * FROM release WHERE show_id={show_id} AND (status="extracted" OR (status="downloading" AND last_change_time>={last_change}))'.format(show_id=self.show['id'], last_change=last_change)
+            releases = list(self.db.query(query))
             for release in releases:
                 self.release = release
                 self.__download_subtitle()
@@ -40,8 +45,18 @@ class Gordo(object):
         self.db['release'].update(self.release, ['id'], ensure=False)
         self.commit()
 
+def worker(results):
+    base_path = sys.argv[1]
+    g = Gordo(base_path, results)
+    try:
+        g.work()
+    except Exception, ex:
+        print "Exception {ex} ao tentar baixar {results}".format(ex=ex, results=results)
+
 
 if __name__ == '__main__':
-    base_path = sys.argv[1]
-    g = Gordo(base_path)
-    g.work()
+    db = dataset.connect('postgresql+psycopg2://postgres@localhost/legendastvmirror')
+    results = list(db['shows'].find(status='done'))
+    print "Inicializando com %d workers " % NUM_WORKERS
+    pool = Pool(processes=NUM_WORKERS)
+    pool.map(worker, results)
