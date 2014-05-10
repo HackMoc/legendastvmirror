@@ -1,7 +1,6 @@
-import sys
-import datetime
 import dataset
 import sqlalchemy
+
 
 def setup():
     db = dataset.connect('postgresql+psycopg2://postgres@localhost/legendastvmirror')
