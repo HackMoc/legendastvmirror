@@ -2,8 +2,9 @@ import dataset
 import sqlalchemy
 
 
-def setup():
-    db = dataset.connect('postgresql+psycopg2://postgres@localhost/legendastvmirror')
+def setup(db_url):
+    db = dataset.connect(db_url)
+
     table = db.get_table('shows')
     table.create_column('exists', sqlalchemy.Boolean)
     table.create_column('show_id', sqlalchemy.Integer)
@@ -22,5 +23,4 @@ def setup():
     table.create_column('filename', sqlalchemy.String(4000))
     table.create_column('slug', sqlalchemy.String(4000))
 
-if __name__ == '__main__':
-    setup()
+    print 'Done.'

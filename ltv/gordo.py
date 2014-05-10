@@ -8,7 +8,7 @@ import sys
 
 class Gordo(object):
 
-    def __init__(self, base_path, *args, **kwargs)
+    def __init__(self, base_path, *args, **kwargs):
         self.base_path = base_path
         self.db = dataset.connect('postgresql+psycopg2://postgres@localhost/legendastvmirror')
         self.shows = self.db['shows'].find(status='done')
@@ -33,7 +33,7 @@ class Gordo(object):
         name = '[{language}]{slug}.rar'.format(language=self.release['language'], slug=self.release['slug'])
         filename = os.path.join([self.base_path, self.show['show_name'][0], self.show['show_name'], name])
         with open(filename, 'wb') as arquivo:
-            aquivo.write(subtitle)
+            arquivo.write(subtitle)
         self.db.begin()
         self.release['status'] = 'done'
         self.release['last_change_time'] = datetime.datetime.now()

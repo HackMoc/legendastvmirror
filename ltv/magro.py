@@ -1,17 +1,14 @@
 # -*- coding: utf-8 -*-
 import datetime
-from multiprocessing import Pool
 from bs4 import BeautifulSoup as BS
 import requests
 import dataset
 
 
-NUM_WORKERS = 10
-
 class Magro(object):
 
-    def __init__(self, results=[]):
-        self.db = dataset.connect('postgresql+psycopg2://postgres@localhost/legendastvmirror')
+    def __init__(self, results=[], db_url=None):
+        self.db = dataset.connect(db_url)
         if type(results) is not list:
             results = [results]
         self.results = results
@@ -36,7 +33,7 @@ class Magro(object):
                 'show_id':self.show['show_id'],
                 'idioma': s.find_parents('div', {'class': 'gallery'})[0].find('img')['title'],
             }
-            for s in soup.find_all('a') if s.get('href') and s['href'].startswith('/download')
+            for s in soup.find_all('a') if s.get('href') and s.get('href', '').startswith('/download')
         ]
         self.links.extend(_links)
         load_more = soup.find_all('a', attrs={'class': 'load_more'})
@@ -66,17 +63,11 @@ class Magro(object):
                        filename='')
         self.db['releases'].insert(release, ensure=False)
 
-def worker(results):
-    m = Magro(results)
+
+def worker(args):
+    results, db_url = args
+    m = Magro(results, db_url)
     try:
         m.work()
     except Exception, ex:
         print "Exception {ex} ao tentar baixar {results}".format(ex=ex, results=results)
-
-if __name__ == '__main__':
-    db = dataset.connect('postgresql+psycopg2://postgres@localhost/legendastvmirror')
-    _30diasatras = datetime.datetime.now() - datetime.timedelta(30)
-    results = list(db['shows'].find(exists=None))
-    print "Inicializando com %d workers " % NUM_WORKERS
-    pool = Pool(processes=NUM_WORKERS)
-    pool.map(worker, results)
