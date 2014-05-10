@@ -19,7 +19,8 @@ class Magro(object):
             self.__salva_links()
 
     def __pega_links(self, pagina=1):
-        page = requests.get('http://legendas.tv/util/carrega_legendas_busca/id_filme:{num}/page:{page}'.format(num=self.show['show_id'],page=pagina))
+        url = 'http://legendas.tv/util/carrega_legendas_busca/id_filme:{num}/page:{page}'.format(num=self.show['show_id'],page=pagina)
+        page = requests.get(url, headers={'X-Requested-With':'XMLHttpRequest'})
         soup = BS(page.content)
         _links = [{'link': s['href'],
                   'show_id':self.show['show_id'],
