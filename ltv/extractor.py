@@ -11,7 +11,10 @@ class Extractor(object):
         self.db = dataset.connect('postgresql+psycopg2://postgres@10.0.0.101/legendastvmirror')
         maxtime = datetime.datetime.now() - datetime.timedelta(minutes=10)
         maxtime = maxtime.strftime("%Y-%m-%d %H:%M")
-        query = "SELECT * FROM shows WHERE status = 'new' OR (status = 'extracting' and last_change_time  <= '{maxtime}')".format(maxtime=maxtime)
+        query = """ SELECT * FROM shows
+        WHERE status = 'new'
+        OR (status = 'extracting' and last_change_time  <= '{maxtime}')
+        """.format(maxtime=maxtime)
         self.shows = list(self.db.query(query))
 
     def work(self):
