@@ -7,7 +7,7 @@ O Legendas.tv é um site que disponibiliza legendas de filme, series e cartoons 
 - [Objetivo](#objetivo)
 - [Como usar](#como-usar)
 - [Contribuindo](#contribuindo)
-- [Nós conheça](#hackmoc)
+- [Nos conheça](#hackmoc)
 
 ## Objetivo
 
