@@ -6,26 +6,30 @@ import dataset
 
 
 class ReleaseLinksSpider(object):
-    def __init__(self, results=[], db_url=None):
+    def __init__(self, results=[], db_url=None, verbose=True):
         self.db = dataset.connect(db_url)
         if type(results) is not list:
             results = [results]
         self.results = results
         self.links = []
+        self.verbose = verbose
 
-    def work(self, *args, **kwargs):
+    def work(self):
         for show in self.results:
             self.show = show
             self.__get_links()
             self.__save_links()
 
     def __get_links(self, pagina=1):
+        if self.verbose:
+            print "Show id: {id}, Page: {page}".format(id=self.show['show_id'], page=pagina)
         url = 'http://legendas.tv/util/carrega_legendas_busca/id_filme:{num}/page:{page}'.format(
             num=self.show['show_id'],
             page=pagina
         )
         page = requests.get(url, headers={'X-Requested-With': 'XMLHttpRequest'})
         soup = BS(page.content)
+        print page.content
         _links = [
             {
                 'link': s['href'],
@@ -36,6 +40,8 @@ class ReleaseLinksSpider(object):
         ]
         self.links.extend(_links)
         load_more = soup.find_all('a', attrs={'class': 'load_more'})
+        if self.verbose:
+            print "Adicionando links: ", _links
         if load_more:
             return self.__pega_links(pagina+1)
 
