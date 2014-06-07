@@ -9,6 +9,7 @@ from multiprocessing import Pool
 
 NUM_WORKERS = 10
 
+
 class Gordo(object):
 
     def __init__(self, base_path, results, *args, **kwargs):
@@ -21,8 +22,15 @@ class Gordo(object):
     def work(self, *args, **kwargs):
         for show in self.shows:
             self.show = show
-            last_change = datetime.datetime.strftime(datetime.datetime.now() + datetime.timedelta(minutes=20), '%Y-%m-%d %H:%M')
-            query = 'SELECT * FROM release WHERE show_id={show_id} AND (status="extracted" OR (status="downloading" AND last_change_time>={last_change}))'.format(show_id=self.show['id'], last_change=last_change)
+            last_change = datetime.datetime.strftime(
+                datetime.datetime.now() + datetime.timedelta(minutes=20),
+                '%Y-%m-%d %H:%M'
+            )
+            query = 'SELECT * FROM release \
+                    WHERE show_id={show_id} AND (\
+                        status="extracted" OR \
+                        (status="downloading" AND last_change_time>={last_change})\
+                    )'.format(show_id=self.show['id'], last_change=last_change)
             releases = list(self.db.query(query))
             for release in releases:
                 self.release = release
@@ -44,6 +52,7 @@ class Gordo(object):
         self.release['last_change_time'] = datetime.datetime.now()
         self.db['release'].update(self.release, ['id'], ensure=False)
         self.commit()
+
 
 def worker(results):
     base_path = sys.argv[1]
