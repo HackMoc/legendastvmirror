@@ -40,7 +40,7 @@ class Gordo(object):
         with open(filename, 'wb') as arquivo:
             arquivo.write(subtitle)
         self.db.begin()
-        self.release['status'] = 'done'
+        self.release['status'] = 'downloaded'
         self.release['last_change_time'] = datetime.datetime.now()
         self.db['release'].update(self.release, ['id'], ensure=False)
         self.commit()
