@@ -6,7 +6,6 @@ import dataset
 
 
 class Magro(object):
-
     def __init__(self, results=[], db_url=None):
         self.db = dataset.connect(db_url)
         if type(results) is not list:

@@ -12,14 +12,14 @@ NUM_WORKERS = 10
 
 class Gordo(object):
 
-    def __init__(self, base_path, results, *args, **kwargs):
+    def __init__(self, base_path, results):
         self.base_path = base_path
         self.db = dataset.connect('postgresql+psycopg2://postgres@localhost/legendastvmirror')
         self.shows = results
         self.release = None
         self.show = None
 
-    def work(self, *args, **kwargs):
+    def work(self):
         for show in self.shows:
             self.show = show
             last_change = datetime.datetime.strftime(
@@ -36,7 +36,7 @@ class Gordo(object):
                 self.release = release
                 self.__download_subtitle()
 
-    def __download_subtitle(self, *args, **kwargs):
+    def __download_subtitle(self):
         self.db.begin()
         self.release['status'] = 'downloading'
         self.release['last_change_time'] = datetime.datetime.now()
