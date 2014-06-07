@@ -5,7 +5,7 @@ import requests
 import dataset
 
 
-class Magro(object):
+class ReleaseLinksSpider(object):
     def __init__(self, results=[], db_url=None):
         self.db = dataset.connect(db_url)
         if type(results) is not list:
@@ -16,10 +16,10 @@ class Magro(object):
     def work(self, *args, **kwargs):
         for show in self.results:
             self.show = show
-            self.__pega_links()
-            self.__salva_links()
+            self.__get_links()
+            self.__save_links()
 
-    def __pega_links(self, pagina=1):
+    def __get_links(self, pagina=1):
         url = 'http://legendas.tv/util/carrega_legendas_busca/id_filme:{num}/page:{page}'.format(
             num=self.show['show_id'],
             page=pagina
@@ -39,7 +39,7 @@ class Magro(object):
         if load_more:
             return self.__pega_links(pagina+1)
 
-    def __salva_links(self):
+    def __save_links(self):
         self.db.begin()
         self.show['exists'] = bool(self.links)
         self.show['last_change_time'] = datetime.datetime.now()
@@ -47,11 +47,11 @@ class Magro(object):
         self.db['shows'].update(self.show, ['id'])
         for link in self.links:
             print "[{show} Salvando link {link}".format(show=link['show_id'], link=link['link'])
-            self.__salva_link(link)
+            self.__save_link(link)
         self.db.commit()
         self.links = []
 
-    def __salva_link(self, link):
+    def __save_link(self, link):
         release = dict(status='new',
                        language=link['idioma'],
                        release_link=link['link'],
@@ -65,7 +65,7 @@ class Magro(object):
 
 def worker(args):
     results, db_url = args
-    m = Magro(results, db_url)
+    m = ReleaseLinksSpider(results, db_url)
     try:
         m.work()
     except Exception, ex:

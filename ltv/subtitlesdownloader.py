@@ -6,12 +6,9 @@ import requests
 import sys
 from multiprocessing import Pool
 
-
 NUM_WORKERS = 10
 
-
-class Gordo(object):
-
+class SubtitlesDownloader(object):
     def __init__(self, base_path, results):
         self.base_path = base_path
         self.db = dataset.connect('postgresql+psycopg2://postgres@localhost/legendastvmirror')
@@ -56,16 +53,19 @@ class Gordo(object):
 
 def worker(results):
     base_path = sys.argv[1]
-    g = Gordo(base_path, results)
+    g = SubtitlesDownloader(base_path, results)
     try:
         g.work()
     except Exception, ex:
         print "Exception {ex} ao tentar baixar {results}".format(ex=ex, results=results)
 
 
-if __name__ == '__main__':
+def run():
     db = dataset.connect('postgresql+psycopg2://postgres@localhost/legendastvmirror')
     results = list(db['shows'].find(status='done'))
     print "Inicializando com %d workers " % NUM_WORKERS
     pool = Pool(processes=NUM_WORKERS)
     pool.map(worker, results)
+
+if __name__ == '__main__':
+    run()
