@@ -8,10 +8,12 @@ import itertools
 import multiprocessing
 from ltv import magro
 from ltv import setupdb
+from ltv import id_generator
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
+    parser.add_argument('--generate-ids', help='Gera os ids dos filmes (primeiro passo)', default=30000, type=int)
     parser.add_argument('--dbhost', help='Hostname/IP do servidor de banco de dados', default='localhost')
     parser.add_argument('--magro', help='Executa o módulo "magro"', action='store_true')
     parser.add_argument('--setupdb', help='Inicializa o banco de dados', action='store_true')
@@ -37,3 +39,5 @@ if __name__ == '__main__':
             magro.worker(args=(results, db_url))
         print "Finalizado."
         exit(0)
+    if args.generate_ids:
+        id_generator.run(args.generate_ids)
